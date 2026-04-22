@@ -1,14 +1,8 @@
-import Groq from 'groq-sdk';
-import dotenv from 'dotenv';
+const Groq = require('groq-sdk');
 
-dotenv.config();
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
-export const analyzeContract = async (rawText) => {
-  // Trim text to avoid exceeding token limits
+const analyzeContract = async (rawText) => {
   const trimmedText = rawText.slice(0, 8000);
 
   const prompt = `
@@ -22,51 +16,41 @@ ${trimmedText}
 
 Respond with EXACTLY this JSON structure:
 {
-  "summary": "2-3 sentence plain English summary of what this contract is about and who the parties are",
+  "summary": "2-3 sentence plain English summary",
   "riskScore": 45,
   "clauses": [
     {
       "title": "Payment Terms",
-      "text": "exact relevant text from the contract for this clause",
+      "text": "exact relevant text from the contract",
       "risk": "high",
-      "explanation": "Plain English explanation of why this is risky or notable",
-      "suggestion": "What the user should negotiate or watch out for"
+      "explanation": "Plain English explanation",
+      "suggestion": "What to negotiate"
     }
   ],
   "deadlines": [
     {
-      "label": "Contract Expiry Date",
+      "label": "Contract Expiry",
       "date": "2025-12-31"
     }
   ]
 }
 
-Rules you MUST follow:
-- riskScore must be a number between 0 and 100 (higher = more risky)
-- risk field must be exactly one of: "low", "medium", "high"
-- Extract ALL important clauses: payment, termination, IP ownership, liability, confidentiality, non-compete, penalties, renewal
-- Extract ALL dates and deadlines found in the contract
-- If no deadlines found, return empty array: "deadlines": []
-- Keep all explanations in simple plain English, no legal jargon
-- Return ONLY the JSON object, nothing else before or after it
+Rules:
+- riskScore must be 0-100
+- risk must be exactly: "low", "medium", or "high"
+- Extract ALL important clauses
+- Extract ALL dates
+- Return ONLY the JSON object
 `;
 
   const response = await groq.chat.completions.create({
     model:       'llama-3.3-70b-versatile',
-    temperature: 0.1, // low temperature = consistent, precise output
+    temperature: 0.1,
     max_tokens:  4000,
-    messages: [
-      {
-        role:    'user',
-        content: prompt,
-      },
-    ],
+    messages:    [{ role: 'user', content: prompt }],
   });
 
   const content = response.choices[0].message.content.trim();
-
-  // ─── Clean and Parse JSON ────────────────────────
-  // Sometimes AI wraps response in ```json ... ``` — strip it
   const cleaned = content
     .replace(/^```json\s*/i, '')
     .replace(/^```\s*/i, '')
@@ -80,10 +64,9 @@ Rules you MUST follow:
     throw new Error(`AI returned invalid JSON: ${err.message}`);
   }
 
-  // ─── Validate Required Fields ────────────────────
   if (
-    typeof parsed.summary    !== 'string' ||
-    typeof parsed.riskScore  !== 'number' ||
+    typeof parsed.summary   !== 'string' ||
+    typeof parsed.riskScore !== 'number' ||
     !Array.isArray(parsed.clauses) ||
     !Array.isArray(parsed.deadlines)
   ) {
@@ -92,3 +75,5 @@ Rules you MUST follow:
 
   return parsed;
 };
+
+module.exports = { analyzeContract };

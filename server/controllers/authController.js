@@ -1,62 +1,47 @@
-import User from '../models/User.js';
-import jwt from 'jsonwebtoken';
+const User = require('../models/User');
+const jwt  = require('jsonwebtoken');
 
-// Generate JWT token
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-};
+const signToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-// Format user response
 const sendTokenResponse = (user, statusCode, res) => {
   const token = signToken(user._id);
   res.status(statusCode).json({
     success: true,
     token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    },
+    user: { id: user._id, name: user.name, email: user.email },
   });
 };
 
-// POST /api/auth/register
-export const register = async (req, res) => {
+const register = async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password)
     return res.status(400).json({ message: 'Please provide all fields' });
-  }
 
   const userExists = await User.findOne({ email });
-  if (userExists) {
+  if (userExists)
     return res.status(400).json({ message: 'Email already registered' });
-  }
 
   const user = await User.create({ name, email, password });
   sendTokenResponse(user, 201, res);
 };
 
-// POST /api/auth/login
-export const login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
+  if (!email || !password)
     return res.status(400).json({ message: 'Please provide email and password' });
-  }
 
   const user = await User.findOne({ email });
-  if (!user || !(await user.matchPassword(password))) {
+  if (!user || !(await user.matchPassword(password)))
     return res.status(401).json({ message: 'Invalid email or password' });
-  }
 
   sendTokenResponse(user, 200, res);
 };
 
-// GET /api/auth/me
-export const getMe = async (req, res) => {
-  res.status(200).json({
-    success: true,
-    user: req.user,
-  });
+const getMe = async (req, res) => {
+  res.status(200).json({ success: true, user: req.user });
 };
+
+module.exports = { register, login, getMe };

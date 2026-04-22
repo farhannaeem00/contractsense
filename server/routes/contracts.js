@@ -1,21 +1,20 @@
-import express from 'express';
-import { protect } from '../middleware/auth.js';
-import { upload } from '../middleware/upload.js';
-import {
+const express  = require('express');
+const { protect } = require('../middleware/auth');
+const { upload }  = require('../middleware/upload');
+const {
   uploadContract,
   getContracts,
   getContract,
   deleteContract,
-} from '../controllers/contractController.js';
+} = require('../controllers/contractController');
 
 const router = express.Router();
 
-// All contract routes require authentication
 router.use(protect);
 
-router.post('/',     upload.single('contract'), uploadContract);
-router.get('/',      getContracts);
-router.get('/:id',   getContract);
+router.post('/',      upload.single('contract'), uploadContract);
+router.get('/',       getContracts);
+router.get('/:id',    getContract);
 router.delete('/:id', deleteContract);
 
-export default router;
+module.exports = router;
