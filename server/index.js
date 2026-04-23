@@ -1,18 +1,24 @@
 require('dotenv').config();
 require('express-async-errors');
 
-const express    = require('express');
-const cors       = require('cors');
-const connectDB  = require('./config/db');
-const authRoutes     = require('./routes/auth');
-const contractRoutes = require('./routes/contracts');
-const reportRoutes   = require('./routes/reports');
-const { errorHandler }  = require('./middleware/errorHandler');
-const { apiLimiter }    = require('./middleware/rateLimiter');
+const express         = require('express');
+const cors            = require('cors');
+const helmet          = require('helmet');
+const mongoSanitize   = require('express-mongo-sanitize');
+const xss             = require('xss-clean');
+const connectDB       = require('./config/db');
+const authRoutes      = require('./routes/auth');
+const contractRoutes  = require('./routes/contracts');
+const reportRoutes    = require('./routes/reports');
+const { errorHandler } = require('./middleware/errorHandler');
+const { apiLimiter }   = require('./middleware/rateLimiter');
 
 const app = express();
 
-// ─── Middleware ──────────────────────────────────────
+// ─── Security Headers ────────────────────────────────
+app.use(helmet());
+
+// ─── CORS ────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -30,7 +36,12 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.json());
+// ─── Body Parser ─────────────────────────────────────
+app.use(express.json({ limit: '10kb' })); // limit body size
+
+// ─── Sanitization ────────────────────────────────────
+app.use(mongoSanitize()); // prevent MongoDB injection
+app.use(xss());           // prevent XSS attacks
 
 // ─── Rate Limiting ───────────────────────────────────
 app.use('/api', apiLimiter);

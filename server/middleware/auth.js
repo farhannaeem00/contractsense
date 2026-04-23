@@ -1,12 +1,27 @@
-const express    = require('express');
-const { register, login, getMe } = require('../controllers/authController');
-const { protect }     = require('../middleware/auth');
-const { authLimiter } = require('../middleware/rateLimiter');
+const jwt  = require('jsonwebtoken');
+const User = require('../models/User');
 
-const router = express.Router();
+const protect = async (req, res, next) => {
+  let token;
 
-router.post('/register', authLimiter, register);
-router.post('/login',    authLimiter, login);
-router.get('/me',        protect, getMe);
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
 
-module.exports = router;
+  if (!token) {
+    return res.status(401).json({ message: 'Not authorized, no token' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id).select('-password');
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Not authorized, invalid token' });
+  }
+};
+
+module.exports = { protect };
