@@ -16,7 +16,10 @@ const { apiLimiter }   = require('./middleware/rateLimiter');
 const app = express();
 
 // ─── Security Headers ────────────────────────────────
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false, // ✅ disable CSP — handled by frontend
+}));
 
 // ─── CORS ────────────────────────────────────────────
 const allowedOrigins = [
