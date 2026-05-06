@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-
+import usePageTitle from '../hooks/usePageTitle';
 export default function Register() {
+  usePageTitle('Create Account');
   const [form, setForm]           = useState({ name: '', email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading]     = useState(false);

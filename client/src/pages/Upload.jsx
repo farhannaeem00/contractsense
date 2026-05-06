@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import usePageTitle from '../hooks/usePageTitle';
+
 
 // ─── Format File Size ────────────────────────────────
 const formatSize = (bytes) => {
@@ -16,6 +18,7 @@ const formatSize = (bytes) => {
 };
 
 export default function Upload() {
+  usePageTitle('Upload Contract');
   const [file, setFile]       = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate              = useNavigate();

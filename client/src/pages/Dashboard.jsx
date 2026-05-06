@@ -7,6 +7,8 @@ import {
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import usePageTitle from '../hooks/usePageTitle';
+
 
 // ─── Risk Badge ──────────────────────────────────────
 const RiskBadge = ({ score }) => {
@@ -54,6 +56,7 @@ const formatSize = (bytes) => {
 
 // ─── Main Dashboard ──────────────────────────────────
 export default function Dashboard() {
+  usePageTitle('Dashboard');
   const { user, logout }          = useAuth();
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading]     = useState(true);

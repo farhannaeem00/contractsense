@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-
+import usePageTitle from '../hooks/usePageTitle';
 export default function Login() {
+  usePageTitle('Sign In');
   const [form, setForm]               = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading]         = useState(false);

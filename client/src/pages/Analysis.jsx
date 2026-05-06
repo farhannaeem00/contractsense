@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import usePageTitle from '../hooks/usePageTitle';
+
 
 // ─── Risk Config ─────────────────────────────────────
 const riskConfig = {
@@ -100,6 +102,8 @@ const ErrorState = ({ message }) => (
 
 // ─── Main Analysis Page ───────────────────────────────
 export default function Analysis() {
+  usePageTitle('Contract Analysis');
+
   const { id }                    = useParams();
   const [contract, setContract]   = useState(null);
   const [loading, setLoading]     = useState(true);

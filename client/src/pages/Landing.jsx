@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ShieldCheck, FileSearch, Clock, Download, ArrowRight, CheckCircle } from 'lucide-react';
+import usePageTitle from '../hooks/usePageTitle';
+
 
 // ─── Feature Card ────────────────────────────────────
 const FeatureCard = ({ icon, title, description }) => (
@@ -27,6 +29,7 @@ const StepCard = ({ number, title, description }) => (
 
 // ─── Main Landing Page ───────────────────────────────
 export default function Landing() {
+  usePageTitle('AI Contract Intelligence');
   return (
     <div className="min-h-screen bg-gray-50">
 
