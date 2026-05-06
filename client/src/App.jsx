@@ -7,6 +7,7 @@ import Login    from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Upload   from './pages/Upload';
+import NotFound from './pages/NotFound';
 import Analysis from './pages/Analysis';
 
 // ─── Protected Route Wrapper ─────────────────────────
@@ -63,7 +64,8 @@ export default function App() {
         <Route path="/analysis/:id" element={<PrivateRoute><Analysis /></PrivateRoute>} />
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
     </BrowserRouter>
   );
