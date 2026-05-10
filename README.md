@@ -463,7 +463,8 @@ VITE v5.x.x  ready in xxx ms
 Navigate to:
 
 ```
-http://localhost:5173
+🔗 **Live Demo:** https://contractsenseclient.vercel.app
+🔗 **Backend API:** https://contractsense-seven.vercel.app
 ```
 
 🎉 **ContractSense is now running locally!**
