@@ -7,6 +7,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import SkeletonCard from '../components/SkeletonCard';
 import usePageTitle from '../hooks/usePageTitle';
 
 
@@ -171,8 +172,8 @@ export default function Dashboard() {
 
         {/* ── Contracts List ── */}
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+          <div className="flex flex-col gap-3">
+            {[1, 2, 3].map(i => <SkeletonCard key={i} />)}
           </div>
         ) : contracts.length === 0 ? (
           <div className="bg-white rounded-2xl border border-gray-100 p-16 text-center shadow-sm">
