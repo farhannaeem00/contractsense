@@ -926,7 +926,6 @@ const Footer = () => (
           <div className="flex items-center gap-3">
             {[
               { icon: <Github size={16} />, href: 'https://github.com/farhannaeem00' },
-              { icon: <Twitter size={16} />, href: '#' },
             ].map((social, i) => (
               <a key={i} href={social.href} target="_blank" rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/4 border border-white/8
