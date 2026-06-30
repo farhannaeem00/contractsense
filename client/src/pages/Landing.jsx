@@ -4,7 +4,7 @@ import {
   ShieldCheck, FileText, Zap, ArrowRight,
   CheckCircle, Star, Lock, Clock,
   TrendingUp, AlertTriangle, ChevronRight,
-  Github, Twitter, Linkedin, ExternalLink,
+  Github, Twitter, ExternalLink,
   Menu, X, Sparkles
 } from 'lucide-react';
 
@@ -927,7 +927,6 @@ const Footer = () => (
             {[
               { icon: <Github size={16} />, href: 'https://github.com/farhannaeem00' },
               { icon: <Twitter size={16} />, href: '#' },
-              { icon: <Linkedin size={16} />, href: '#' },
             ].map((social, i) => (
               <a key={i} href={social.href} target="_blank" rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/4 border border-white/8
