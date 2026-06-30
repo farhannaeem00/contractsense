@@ -4,7 +4,7 @@ import {
   ShieldCheck, FileText, Zap, ArrowRight,
   CheckCircle, Star, Lock, Clock,
   TrendingUp, AlertTriangle, ChevronRight,
-  Github, Globe, Mail, ExternalLink,
+  GitBranch, Globe, Mail, ExternalLink,
   Menu, X, Sparkles
 } from 'lucide-react';
 
@@ -925,7 +925,7 @@ const Footer = () => (
           {/* Social icons */}
           <div className="flex items-center gap-3">
             {[
-              { icon: <Github size={16} />, href: 'https://github.com/farhannaeem00' },
+              { icon: <GitBranch size={16} />, href: 'https://github.com/farhannaeem00' },
               { icon: <Globe size={16} />, href: '#' },
               { icon: <Mail size={16} />, href: '#' },
             ].map((social, i) => (
