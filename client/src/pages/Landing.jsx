@@ -925,10 +925,10 @@ const Footer = () => (
           {/* Social icons */}
           <div className="flex items-center gap-3">
             {[
-                  { icon: <Github size={16} />, href: 'https://github.com/farhannaeem00' },
-                  { icon: <Globe size={16} />, href: '#' },
-                  { icon: <Mail size={16} />, href: '#' },
-                ].map((social, i) => ( (
+              { icon: <Github size={16} />, href: 'https://github.com/farhannaeem00' },
+              { icon: <Globe size={16} />, href: '#' },
+              { icon: <Mail size={16} />, href: '#' },
+            ].map((social, i) => (
               <a key={i} href={social.href} target="_blank" rel="noreferrer"
                 className="w-9 h-9 rounded-xl bg-white/4 border border-white/8
                            flex items-center justify-center text-slate-400
